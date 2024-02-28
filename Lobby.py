@@ -111,7 +111,7 @@ class Settings(pygame.sprite.Sprite):
 if __name__ == '__main__':
     all_sprites = pygame.sprite.Group()
     running = True
-    fps = 30
+    fps = 60
 
     clock = pygame.time.Clock()
     while running:
