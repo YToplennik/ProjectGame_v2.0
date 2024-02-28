@@ -1,12 +1,16 @@
 import os
 import sys
 import pygame
+from Game import opengame
 
-all_sprites = pygame.sprite.Group()
 pygame.init()
 pygame.display.set_caption('Lobby')
 size = width, height = 400, 550
 screen = pygame.display.set_mode(size)
+playBtnPush = False
+setBtnPush = False
+lidersBtnPush = False
+skinsBtnPush = False
 
 
 def load_image(name, colorkey=None):
@@ -39,23 +43,75 @@ class PlayBtn(pygame.sprite.Sprite):
         pygame.display.flip()
 
     def update(self, *args):
+        global playBtnPush
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+            self.image = self.image2
+            playBtnPush = False
+        if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+            if not playBtnPush:
+                playBtnPush = True
+                print('open')
+                opengame()
+
+
+class Liders(pygame.sprite.Sprite):
+    img_Lid = load_image('Leaders.png')
+    img_Lid2 = load_image('LeadersPST.png')
+
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.image = Liders.img_Lid
+        self.image2 = Liders.img_Lid2
+        self.rect = self.image.get_rect()
+        self.rect.x = 65
+        self.rect.y = 260
+        pygame.display.flip()
+
+    def update(self, *args):
         if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
             self.image = self.image2
 
 
-class Liders(pygame.sprite.Sprite):
-    pass
-
-
 class Skins(pygame.sprite.Sprite):
-    pass
+    img_Skins = load_image('skins.png')
+    img_Skins2 = load_image('skinsPST.png')
+
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.image = Skins.img_Skins
+        self.image2 = Skins.img_Skins2
+        self.rect = self.image.get_rect()
+        self.rect.x = 265
+        self.rect.y = 260
+        pygame.display.flip()
+
+    def update(self, *args):
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+            self.image = self.image2
+
+
+class Settings(pygame.sprite.Sprite):
+    img_Set = load_image('Set.png')
+    img_Set2 = load_image('SetPST.png')
+
+    def __init__(self, *group):
+        super().__init__(*group)
+        self.image = Settings.img_Set
+        self.image2 = Settings.img_Set2
+        self.rect = self.image.get_rect()
+        self.rect.x = 15
+        self.rect.y = 15
+        pygame.display.flip()
+
+    def update(self, *args):
+        if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+            self.image = self.image2
 
 
 if __name__ == '__main__':
     all_sprites = pygame.sprite.Group()
     running = True
-    fps = 60
-    v = 20  # пикселей в секунду
+    fps = 30
 
     clock = pygame.time.Clock()
     while running:
@@ -63,6 +119,9 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
         PlayBtn(all_sprites)
+        Settings(all_sprites)
+        Liders(all_sprites)
+        Skins(all_sprites)
         all_sprites.update(event)
         screen.fill("#F0F0F0")
         all_sprites.draw(screen)
