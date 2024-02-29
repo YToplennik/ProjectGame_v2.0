@@ -1,12 +1,11 @@
 import os
 import sys
 import pygame
-from Tkinter import Tk     # from tkinter import Tk for Python 3.x
+from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
 
 
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-filename = askopenfilename()
+
 
 def openskins():
     pygame.init()
