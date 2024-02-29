@@ -129,7 +129,7 @@ def openskins():
                 self.image = pygame.image.load(os.path.join('Sprites', '0_pimage.png'))
                 self.image = pygame.transform.scale(self.image, (80, 80))
             self.rect = self.image.get_rect()
-            self.rect.x = 180
+            self.rect.x = 186
             self.rect.y = 300
             pygame.display.flip()
 
