@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 from Game import opengame
+from Skins import openskins
 
 pygame.init()
 pygame.display.set_caption('Lobby')
@@ -86,8 +87,15 @@ class Skins(pygame.sprite.Sprite):
         pygame.display.flip()
 
     def update(self, *args):
+        global skinsBtnPush
         if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
             self.image = self.image2
+            skinsBtnPush = False
+        if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+            if not skinsBtnPush:
+                skinsBtnPush = True
+                # print('open')
+                openskins()
 
 
 class Settings(pygame.sprite.Sprite):

@@ -26,6 +26,3 @@ def painter(filename, dir_in, dir_out):
                 elif k == 7:
                     cim.putpixel((i, j), (data[0], 0, data[2]))
         cim.save(os.path.join(dir_out, f'{k}_pimage.png'))
-
-
-painter('car2.png', 'Data', 'colored')

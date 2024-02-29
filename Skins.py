@@ -24,6 +24,23 @@ def openskins():
             image = image.convert_alpha()
         return image
 
+    class CustomSkins(pygame.sprite.Sprite):
+        img_CS = load_image('custom_skins.png')
+        img_CS2 = load_image('custom_skinsPST.png')
+
+        def __init__(self, *group):
+            super().__init__(*group)
+            self.image = CustomSkins.img_CS
+            self.image2 = CustomSkins.img_CS2
+            self.rect = self.image.get_rect()
+            self.rect.x = 65
+            self.rect.y = 260
+            pygame.display.flip()
+
+        def update(self, *args):
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                self.image = self.image2
+
     all_sprites = pygame.sprite.Group()
     running = True
     fps = 60
