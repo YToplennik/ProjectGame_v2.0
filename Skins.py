@@ -1,7 +1,12 @@
 import os
 import sys
 import pygame
+from Tkinter import Tk     # from tkinter import Tk for Python 3.x
+from tkinter.filedialog import askopenfilename
 
+
+Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+filename = askopenfilename()
 
 def openskins():
     pygame.init()
@@ -34,7 +39,24 @@ def openskins():
             self.image2 = CustomSkins.img_CS2
             self.rect = self.image.get_rect()
             self.rect.x = 65
-            self.rect.y = 260
+            self.rect.y = 40
+            pygame.display.flip()
+
+        def update(self, *args):
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                self.image = self.image2
+
+    class StandartSkins(pygame.sprite.Sprite):
+        img_CS = load_image('custom_skins.png')
+        img_CS2 = load_image('custom_skinsPST.png')
+
+        def __init__(self, *group):
+            super().__init__(*group)
+            self.image = CustomSkins.img_CS
+            self.image2 = CustomSkins.img_CS2
+            self.rect = self.image.get_rect()
+            self.rect.x = 295
+            self.rect.y = 40
             pygame.display.flip()
 
         def update(self, *args):
@@ -49,6 +71,8 @@ def openskins():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+        CustomSkins(all_sprites)
+        StandartSkins(all_sprites)
         all_sprites.update(event)
         screen.fill("#F0F0F0")
         all_sprites.draw(screen)
