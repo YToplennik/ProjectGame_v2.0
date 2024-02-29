@@ -2,8 +2,8 @@ from PIL import Image
 import os
 
 
-def painter(filename, dir_in, dir_out):
-    img = Image.open(os.path.join(dir_in, filename)).resize((80, 80))
+def painter(filename, dir_out):
+    img = Image.open(os.path.join('data', filename)).resize((80, 80))
     for k in range(8):
         cim = img.copy()
         for i in range(80):
@@ -12,7 +12,7 @@ def painter(filename, dir_in, dir_out):
                 if k == 0:
                     pass
                 elif k == 1:
-                    cim.putpixel((i, j), (data[0] // 4, data[1] // 4, data[2] // 4))
+                    cim.putpixel((i, j), (data[0] // 6, data[1] // 6, data[2] // 6))
                 elif k == 2:
                     cim.putpixel((i, j), (data[0], 0, 0))
                 elif k == 3:

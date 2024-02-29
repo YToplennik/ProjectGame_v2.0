@@ -1,10 +1,12 @@
 import os
 import sys
 import pygame
-from tkinter import Tk     # from tkinter import Tk for Python 3.x
+from tkinter import Tk
 from tkinter.filedialog import askopenfilename
+from Painter import painter
 
-
+npressed = False
+active = 'std'
 
 
 def openskins():
@@ -34,33 +36,102 @@ def openskins():
 
         def __init__(self, *group):
             super().__init__(*group)
-            self.image = CustomSkins.img_CS
-            self.image2 = CustomSkins.img_CS2
+            self.filename = ''
+            global active
+            if active != 'cust':
+                self.image = CustomSkins.img_CS
+                self.image2 = CustomSkins.img_CS2
+            else:
+                self.image2 = CustomSkins.img_CS
+                self.image = CustomSkins.img_CS2
             self.rect = self.image.get_rect()
             self.rect.x = 65
             self.rect.y = 40
             pygame.display.flip()
 
         def update(self, *args):
+            global CSBtnPush
+            global active
             if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
+                CSBtnPush = False
+            if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+                if (not CSBtnPush) and (active != 'cust'):
+                    CSBtnPush = True
+                    Tk().withdraw()
+                    self.filename = askopenfilename()
+                    print(self.filename)
+                    try:
+                        painter(self.filename, 'Sprites')
+                        active = 'cust'
+                    except Exception:
+                        print('Выберите другой файл')
 
     class StandartSkins(pygame.sprite.Sprite):
-        img_CS = load_image('custom_skins.png')
-        img_CS2 = load_image('custom_skinsPST.png')
+        img_SS = load_image('standart_skins.png')
+        img_SS2 = load_image('standart_skinsPST.png')
 
         def __init__(self, *group):
             super().__init__(*group)
-            self.image = CustomSkins.img_CS
-            self.image2 = CustomSkins.img_CS2
+            if active != 'std':
+                self.image = StandartSkins.img_SS
+                self.image2 = StandartSkins.img_SS2
+            else:
+                self.image2 = StandartSkins.img_SS
+                self.image = StandartSkins.img_SS2
             self.rect = self.image.get_rect()
             self.rect.x = 295
             self.rect.y = 40
             pygame.display.flip()
 
         def update(self, *args):
+            global active
             if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
+                if active != 'std':
+                    active = 'std'
+
+    class CeramicSkins(pygame.sprite.Sprite):
+        img_CerS = load_image('skins.png')
+        img_CerS2 = load_image('skinsPST.png')
+        img_CerS = pygame.transform.scale(img_CerS, (90, 90))
+        img_CerS2 = pygame.transform.scale(img_CerS2, (90, 90))
+
+        def __init__(self, *group):
+            super().__init__(*group)
+            global active
+            if active != 'cer':
+                self.image = CeramicSkins.img_CerS
+                self.image2 = CeramicSkins.img_CerS2
+            else:
+                self.image2 = CeramicSkins.img_CerS
+                self.image = CeramicSkins.img_CerS2
+            self.rect = self.image.get_rect()
+            self.rect.x = 180
+            self.rect.y = 90
+            pygame.display.flip()
+
+        def update(self, *args):
+            global active
+            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                if active != 'cer':
+                    active = 'cer'
+
+    class EXSkins(pygame.sprite.Sprite):
+        def __init__(self, *group):
+            super().__init__(*group)
+            global active
+            if active == 'std':
+                self.image = pygame.image.load(os.path.join('Sprites', 'S_red.png'))
+                self.image = pygame.transform.scale(self.image, (80, 80))
+            elif active == 'cer':
+                self.image = pygame.image.load(os.path.join('Sprites', 'purple.jpg'))
+                self.image = pygame.transform.scale(self.image, (80, 80))
+            else:
+                self.image = pygame.image.load(os.path.join('Sprites', '0_pimage.png'))
+                self.image = pygame.transform.scale(self.image, (80, 80))
+            self.rect = self.image.get_rect()
+            self.rect.x = 180
+            self.rect.y = 300
+            pygame.display.flip()
 
     all_sprites = pygame.sprite.Group()
     running = True
@@ -72,6 +143,8 @@ def openskins():
                 running = False
         CustomSkins(all_sprites)
         StandartSkins(all_sprites)
+        CeramicSkins(all_sprites)
+        EXSkins(all_sprites)
         all_sprites.update(event)
         screen.fill("#F0F0F0")
         all_sprites.draw(screen)
