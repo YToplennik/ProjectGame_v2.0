@@ -9,7 +9,30 @@ def opengame():
     size = width, height = 440, 560
     screen = pygame.display.set_mode(size)
     rezim = ''
+    colors = [
+        'red',
+        'green',
+        'blue',
+        'yellow',
+        'magenta',
+        'white-blue',
+        'white',
+        'black'
+    ]
+    matrix = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
+    ]
+    gameInProcess = False
+
     playBtnPush = False
+    rezTBtn = False
+    rezRBtn = False
+
+    # rezSBtn = False
 
     def load_image(name, colorkey=None):
         fullname = os.path.join('Sprites', name)
@@ -32,79 +55,89 @@ def opengame():
 
         def __init__(self, *group):
             super().__init__(*group)
-            self.image = Play.img_Play
-            self.image2 = Play.img_Play2
-            self.rect = self.image.get_rect()
-            self.rect.x = 150
-            self.rect.y = 200
-            pygame.display.flip()
+            if not gameInProcess:
+                self.image = Play.img_Play
+                self.image2 = Play.img_Play2
+                self.rect = self.image.get_rect()
+                self.rect.x = 170
+                self.rect.y = 180
+                pygame.display.flip()
 
         def update(self, *args):
-            global playBtnPush
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
-                playBtnPush = False
-            if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
-                if not playBtnPush:
-                    playBtnPush = True
-                    print('play')
+            if not gameInProcess:
+                global playBtnPush
+                if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                    self.image = self.image2
+                    playBtnPush = False
+                if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+                    if not playBtnPush:
+                        playBtnPush = True
+                        print('play')
+                        # gameInProcess = True
 
     class RezimTxt(pygame.sprite.Sprite):
-        img_Play = load_image('Playbut.png')
-        img_Play2 = load_image('PlaybutPST.png')
+        img_txt = load_image('mode_text.png')
+        img_txt2 = load_image('mode_textPST.png')
 
         def __init__(self, num):
             super().__init__(num)
-            self.image = RezimTxt.img_Play
-            self.image2 = RezimTxt.img_Play2
-            self.rect = self.image.get_rect()
-            self.rect.x = 150
-            self.rect.y = 200
-            pygame.display.flip()
+            if not gameInProcess:
+                self.image = RezimTxt.img_txt
+                self.image2 = RezimTxt.img_txt2
+                self.rect = self.image.get_rect()
+                self.rect.x = 50
+                self.rect.y = 350
+                pygame.display.flip()
 
         def update(self, *args):
-            global rezim
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
-                rezim = 'txt'
+            if not gameInProcess:
+                global rezim, rezTBtn
+                if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                    self.image = self.image2
+                    rezTBtn = False
+                if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+                    if not rezTBtn:
+                        rezTBtn = True
+                        rezim = 'txt'
+                        print('txt')
 
     class RezimRgb(pygame.sprite.Sprite):
-        img_Play = load_image('Playbut.png')
-        img_Play2 = load_image('PlaybutPST.png')
+        img_color = load_image('mode_color.png')
+        img_color2 = load_image('mode_colorPST.png')
 
         def __init__(self, num):
             super().__init__(num)
-            self.image = RezimTxt.img_Play
-            self.image2 = RezimTxt.img_Play2
-            self.rect = self.image.get_rect()
-            self.rect.x = 150
-            self.rect.y = 200
-            pygame.display.flip()
+            if not gameInProcess:
+                self.image = RezimRgb.img_color
+                self.image2 = RezimRgb.img_color2
+                self.rect = self.image.get_rect()
+                self.rect.x = 175
+                self.rect.y = 350
+                pygame.display.flip()
 
         def update(self, *args):
-            global rezim
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
-                rezim = 'rgb'
+            if not gameInProcess:
+                global rezim, rezRBtn
+                if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
+                    self.image = self.image2
+                    rezRBtn = False
+                if args and args[0].type == pygame.MOUSEBUTTONUP and self.rect.collidepoint(args[0].pos):
+                    if not rezRBtn:
+                        rezRBtn = True
+                        rezim = 'rgb'
+                        print('rgb')
 
     class RezimUnknown(pygame.sprite.Sprite):
-        img_Play = load_image('Playbut.png')
-        img_Play2 = load_image('PlaybutPST.png')
+        img_Play = load_image('mode_mixed.png')
 
         def __init__(self, num):
             super().__init__(num)
-            self.image = RezimTxt.img_Play
-            self.image2 = RezimTxt.img_Play2
-            self.rect = self.image.get_rect()
-            self.rect.x = 150
-            self.rect.y = 200
-            pygame.display.flip()
-
-        def update(self, *args):
-            global rezim
-            if args and args[0].type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(args[0].pos):
-                self.image = self.image2
-                rezim = 'txt'
+            if not gameInProcess:
+                self.image = RezimUnknown.img_Play
+                self.rect = self.image.get_rect()
+                self.rect.x = 300
+                self.rect.y = 350
+                pygame.display.flip()
 
     class TrueBtn(pygame.sprite.Sprite):
         pass
@@ -125,6 +158,9 @@ def opengame():
             if event.type == pygame.QUIT:
                 running = False
         Play(all_sprites)
+        RezimRgb(all_sprites)
+        RezimTxt(all_sprites)
+        RezimUnknown(all_sprites)
         all_sprites.update(event)
         screen.fill("#F0F0F0")
         all_sprites.draw(screen)
