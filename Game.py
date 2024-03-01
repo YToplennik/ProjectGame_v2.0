@@ -3,7 +3,8 @@ import sys
 import pygame
 from GameProcess import openGameProcess
 
-rezim = '///'
+
+rezim = 'txt'
 playBtnPush = False
 rezTBtn = False
 rezRBtn = False
@@ -54,7 +55,7 @@ def opengame():
                 if not playBtnPush:
                     playBtnPush = True
                     print('play')
-                    print(rezim)
+                    openGameProcess(rezim)
 
     class RezimTxt(pygame.sprite.Sprite):
         img_txt = load_image('mode_text.png')
