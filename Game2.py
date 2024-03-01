@@ -582,11 +582,9 @@ def openga():
             # В разработке
             pass
 
-    if __name__ == '__main__':
-        app = QApplication(sys.argv)
-        ex0 = Lobby(20, 66)
-        ex0.show()
-        sys.exit(app.exec())
+    app = QApplication(sys.argv)
+    ex0 = Lobby(20, 66)
+    ex0.show()
+    sys.exit(app.exec())
 
 
-openga()
