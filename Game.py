@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 from GameProcess import openGameProcess
+from Game2 import openga
 
 
 rezim = 'txt'
@@ -55,7 +56,7 @@ def opengame():
                 if not playBtnPush:
                     playBtnPush = True
                     print('play')
-                    openGameProcess(rezim)
+                    openga()
 
     class RezimTxt(pygame.sprite.Sprite):
         img_txt = load_image('mode_text.png')
